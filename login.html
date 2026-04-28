@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criffer Pós-Venda — Acesso</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #000000;
+    --accent: #0f3460;
+    --highlight: #e94560;
+    --highlight2: #533483;
+    --success: #10b981;
+    --bg: #f8f9fc;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --text2: #64748b;
+    --text3: #94a3b8;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.14);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--primary);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* ── PAINEL ESQUERDO ── */
+  .left-panel {
+    width: 52%;
+    background: var(--primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 64px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Grade decorativa */
+  .left-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Círculos de fundo */
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .glow-1 {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(233,69,96,0.18) 0%, transparent 70%);
+    top: -80px; left: -80px;
+  }
+  .glow-2 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(83,52,131,0.22) 0%, transparent 70%);
+    bottom: 40px; right: 60px;
+  }
+  .glow-3 {
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(233,69,96,0.10) 0%, transparent 70%);
+    bottom: 160px; left: 120px;
+  }
+
+  .brand {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 56px;
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .brand-icon {
+    width: 44px; height: 44px;
+    background: var(--highlight);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .brand-icon svg { width: 24px; height: 24px; fill: #fff; }
+
+  .brand-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+
+  .brand-tag {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--highlight);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-left: 56px;
+  }
+
+  .hero-text {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-title {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.12;
+    letter-spacing: -1px;
+    margin-bottom: 18px;
+  }
+
+  .hero-title em {
+    font-style: normal;
+    color: var(--highlight);
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.65;
+    max-width: 380px;
+    margin-bottom: 40px;
+  }
+
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateX(-16px);
+    animation: slideIn 0.5s ease forwards;
+  }
+  .feature:nth-child(1) { animation-delay: 0.6s; }
+  .feature:nth-child(2) { animation-delay: 0.75s; }
+  .feature:nth-child(3) { animation-delay: 0.9s; }
+
+  .feature-dot {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(233,69,96,0.12);
+    border: 1px solid rgba(233,69,96,0.25);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .feature-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+  }
+
+  .feature-label strong {
+    color: rgba(255,255,255,0.9);
+    font-weight: 600;
+  }
+
+  /* Divisor vertical */
+  .divider {
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.08) 80%, transparent);
+    flex-shrink: 0;
+  }
+
+  /* ── PAINEL DIREITO ── */
+  .right-panel {
+    flex: 1;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 48px;
+    border-radius: 28px 0 0 28px;
+    position: relative;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.55s ease 0.2s forwards;
+  }
+
+  .login-card-header {
+    margin-bottom: 32px;
+  }
+
+  .login-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--highlight);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .login-label::before {
+    content: '';
+    display: block;
+    width: 16px; height: 2px;
+    background: var(--highlight);
+    border-radius: 1px;
+  }
+
+  .login-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .login-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  /* Form */
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text2);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    font-size: 15px;
+    pointer-events: none;
+    transition: color 0.2s;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 11px 14px 11px 40px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--surface);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  .form-input::placeholder { color: var(--text3); }
+
+  .form-input:focus {
+    border-color: var(--highlight);
+    box-shadow: 0 0 0 3px rgba(233,69,96,0.10);
+  }
+
+  .form-input:focus + .input-icon,
+  .input-wrap:focus-within .input-icon {
+    color: var(--highlight);
+  }
+
+  /* Reposiciona ícone para ficar antes do input no DOM mas visualmente à esquerda */
+  .input-wrap .form-input { }
+
+  /* Toggle senha */
+  .toggle-pass {
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text3);
+    font-size: 15px;
+    padding: 2px;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .toggle-pass:hover { color: var(--text2); }
+
+  .form-row-end {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    margin-top: -4px;
+  }
+
+  .remember-group {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+  }
+
+  .remember-group input[type="checkbox"] {
+    appearance: none;
+    width: 16px; height: 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+
+  .remember-group input[type="checkbox"]:checked {
+    background: var(--highlight);
+    border-color: var(--highlight);
+  }
+
+  .remember-group input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .remember-label {
+    font-size: 12px;
+    color: var(--text2);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .forgot-link {
+    font-size: 12px;
+    color: var(--highlight);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+  .forgot-link:hover { opacity: 0.75; }
+
+  /* Botão principal */
+  .btn-login {
+    width: 100%;
+    padding: 13px;
+    background: var(--highlight);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-login::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.4s;
+  }
+
+  .btn-login:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(233,69,96,0.35); }
+  .btn-login:hover::before { left: 100%; }
+  .btn-login:active { transform: translateY(0); }
+
+  .btn-login.loading {
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  /* Spinner */
+  .spinner {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  .btn-login.loading .btn-text { display: none; }
+  .btn-login.loading .spinner { display: block; }
+
+  /* Separador */
+  .sep {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0;
+    color: var(--text3);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .sep::before, .sep::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Alert de erro */
+  .alert {
+    display: none;
+    align-items: flex-start;
+    gap: 10px;
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    border-left: 3px solid var(--highlight);
+    border-radius: var(--radius);
+    padding: 11px 14px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: #be123c;
+    line-height: 1.45;
+    animation: fadeUp 0.3s ease;
+  }
+  .alert.show { display: flex; }
+  .alert-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Info versão */
+  .login-footer {
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .login-footer-text {
+    font-size: 10px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .login-footer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #065f46;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  /* ── ANIMAÇÕES ── */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Responsivo */
+  @media (max-width: 860px) {
+    .left-panel { display: none; }
+    .divider { display: none; }
+    .right-panel {
+      border-radius: 0;
+      padding: 32px 24px;
+      background: var(--primary);
+    }
+    .login-card { max-width: 380px; }
+    .login-title { color: #fff; }
+    .login-desc { color: rgba(255,255,255,0.5); }
+    .form-label { color: rgba(255,255,255,0.6); }
+    .form-input {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    .form-input::placeholder { color: rgba(255,255,255,0.3); }
+    .remember-label { color: rgba(255,255,255,0.5); }
+    .sep { color: rgba(255,255,255,0.2); }
+    .sep::before, .sep::after { background: rgba(255,255,255,0.08); }
+    .login-footer { border-top-color: rgba(255,255,255,0.08); }
+    .login-footer-text { color: rgba(255,255,255,0.25); }
+    body { background: var(--primary); }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAINEL ESQUERDO -->
+<div class="left-panel">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+
+  <div class="brand">
+    <div class="brand-logo">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+        </svg>
+      </div>
+      <span class="brand-name">Criffer</span>
+    </div>
+    <div class="brand-tag">Pós-Venda</div>
+  </div>
+
+  <div class="hero-text">
+    <div class="hero-title">
+      Gestão inteligente<br>do <em>pós-venda</em>
+    </div>
+    <p class="hero-sub">
+      Controle completo de garantias, manutenções, cobranças e satisfação do cliente em uma única plataforma.
+    </p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-dot">📊</div>
+        <div class="feature-label"><strong>Dashboard em tempo real</strong> com métricas e KPIs</div>
+      </div>
+      <div class="feature">
+        <div class="feature-dot">🔔</div>
+        <div class="feature-label"><strong>Alertas automáticos</strong> de vencimentos e cobranças</div>
+      </div>
+      <div class="feature">
+        <div class="feature-dot">📋</div>
+        <div class="feature-label"><strong>Relatórios detalhados</strong> exportáveis em Excel</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PAINEL DIREITO -->
+<div class="right-panel">
+  <div class="login-card">
+
+    <div class="login-card-header">
+      <div class="login-label">Acesso ao sistema</div>
+      <h1 class="login-title">Bem-vindo de volta</h1>
+      <p class="login-desc">Faça login com suas credenciais para acessar o painel Criffer.</p>
+    </div>
+
+    <!-- Alert erro -->
+    <div class="alert" id="loginAlert">
+      <span class="alert-icon">⚠️</span>
+      <span id="alertMsg">Usuário ou senha incorretos. Verifique suas credenciais e tente novamente.</span>
+    </div>
+
+    <!-- Form -->
+    <div id="loginForm">
+      <div class="form-group">
+        <label class="form-label" for="usuario">Usuário</label>
+        <div class="input-wrap">
+          <input
+            class="form-input"
+            type="text"
+            id="usuario"
+            placeholder="seu.usuario"
+            autocomplete="username"
+            spellcheck="false"
+          >
+          <span class="input-icon">👤</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="senha">Senha</label>
+        <div class="input-wrap">
+          <input
+            class="form-input"
+            type="password"
+            id="senha"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          >
+          <span class="input-icon">🔒</span>
+          <button type="button" class="toggle-pass" id="togglePass" title="Mostrar/ocultar senha">
+            👁
+          </button>
+        </div>
+      </div>
+
+      <div class="form-row-end">
+        <label class="remember-group">
+          <input type="checkbox" id="lembrar">
+          <span class="remember-label">Lembrar de mim</span>
+        </label>
+        <a href="#" class="forgot-link">Esqueci a senha</a>
+      </div>
+
+      <button class="btn-login" id="btnLogin" onclick="handleLogin()">
+        <span class="btn-text">Entrar no sistema</span>
+        <div class="spinner"></div>
+      </button>
+    </div>
+
+    <div class="login-footer">
+      <span class="login-footer-text">v2.4.1 © 2025 Criffer</span>
+      <span class="login-footer-badge">
+        <span class="status-dot"></span>
+        Sistema online
+      </span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Toggle mostrar/ocultar senha
+  const togglePass = document.getElementById('togglePass');
+  const senhaInput = document.getElementById('senha');
+  let senhaVisivel = false;
+
+  togglePass.addEventListener('click', () => {
+    senhaVisivel = !senhaVisivel;
+    senhaInput.type = senhaVisivel ? 'text' : 'password';
+    togglePass.textContent = senhaVisivel ? '🙈' : '👁';
+  });
+
+  // Enter para logar
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleLogin();
+  });
+
+  // Login
+  function handleLogin() {
+    const usuario = document.getElementById('usuario').value.trim();
+    const senha   = document.getElementById('senha').value;
+    const btn     = document.getElementById('btnLogin');
+    const alert   = document.getElementById('loginAlert');
+
+    // Esconde alerta anterior
+    alert.classList.remove('show');
+
+    // Validação básica
+    if (!usuario || !senha) {
+      document.getElementById('alertMsg').textContent = 'Preencha o usuário e a senha para continuar.';
+      alert.classList.add('show');
+      if (!usuario) document.getElementById('usuario').focus();
+      else document.getElementById('senha').focus();
+      return;
+    }
+
+    // Loading
+    btn.classList.add('loading');
+
+    // Simulação de autenticação (substituir pela lógica real)
+    setTimeout(() => {
+      btn.classList.remove('loading');
+
+      // Exemplo: credenciais válidas → redirecionar para index.html
+      // if (usuario === 'admin' && senha === 'admin') {
+      //   window.location.href = 'index.html';
+      //   return;
+      // }
+
+      // Credencial inválida — mostra erro
+      document.getElementById('alertMsg').textContent = 'Usuário ou senha incorretos. Verifique suas credenciais.';
+      alert.classList.add('show');
+      document.getElementById('senha').value = '';
+      document.getElementById('senha').focus();
+
+    }, 1400);
+  }
+</script>
+</body>
+</html>
